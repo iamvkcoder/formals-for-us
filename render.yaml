@@ -1,0 +1,39 @@
+services:
+  # Node.js Express Backend API
+  - type: web
+    name: formals-for-us-backend
+    env: node
+    plan: starter
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://formals-for-us.vercel.app
+      - key: PYTHON_API_URL
+        fromService:
+          type: web
+          name: formals-for-us-recommendations
+          property: host
+    healthCheckPath: /health
+
+  # Python FastAPI Recommendation Engine
+  - type: web
+    name: formals-for-us-recommendations
+    env: python
+    plan: starter
+    rootDir: python-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+    healthCheckPath: /health
