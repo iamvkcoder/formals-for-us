@@ -2,16 +2,16 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { createApp } from '../app.js';
-import { ENV } from '../config/env.js';
+import { connectDB, disconnectDB } from '../config/db.js';
 
 const app = createApp();
 
 beforeAll(async () => {
-  await mongoose.connect(ENV.MONGODB_URI);
+  await connectDB();
 });
 
 afterAll(async () => {
-  await mongoose.disconnect();
+  await disconnectDB();
 });
 
 describe('API Health Checks', () => {
