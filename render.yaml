@@ -3,7 +3,7 @@ services:
   - type: web
     name: formals-for-us-backend
     env: node
-    plan: starter
+    plan: free
     rootDir: backend
     buildCommand: npm install && npm run build
     startCommand: npm start
@@ -29,7 +29,7 @@ services:
   - type: web
     name: formals-for-us-recommendations
     env: python
-    plan: starter
+    plan: free
     rootDir: python-service
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
